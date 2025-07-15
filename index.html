@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!--
+    Developed by: Igor Kalen
+    Contact: igor@igorkalen.dev
+    Date: July 15, 2025
+
+    ---
+    Copyright (c) 2025 Laius Group. All rights reserved.
+
+    This code and its contents are proprietary to Laius Group. Unauthorized use,
+    reproduction, distribution, or modification of any part of this code is strictly
+    prohibited without explicit written permission from Laius Group.
+
+    This code is intended solely for internal use by official Laius Group operations
+    and deployment on verified domains and subdomains controlled by Laius Group.
+    This restriction does not apply to domains or subdomains where customers have
+    access to user-generated content, which may utilize parts of this code under
+    specific agreements. 
+ -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Laius Entertainment - Password Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+          --primary-color: #27742d;
+          --secondary-color: #ffffff;
+          --text-color: #3a3a3f;
+          --neutral-light: #f8f9fa;
+          --neutral-medium: #d1d5db;
+          --dark-bg: #1a1a1a;
+          --dark-text: #ffffff;
+          --dark-secondary: #2d2d2d;
+        }
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: "Poppins", sans-serif;
+          background-color: var(--secondary-color);
+          color: var(--text-color);
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+        
+        .container {
+          background: var(--neutral-light);
+          border-radius: 15px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          max-width: 420px;
+          width: 100%;
+          padding: 40px 30px;
+          text-align: center;
+          animation: fadeInUp 0.8s ease forwards;
+          position: relative;
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        h1 {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 700;
+          font-size: 32px;
+          color: var(--primary-color);
+          margin-bottom: 10px;
+        }
+        
+        p.subtitle {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 600;
+          font-size: 16px;
+          color: var(--text-color);
+          margin-bottom: 30px;
+        }
+        
+        form {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          align-items: flex-start;
+        }
+        
+        label.checkbox-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 14px;
+          user-select: none;
+          color: var(--text-color);
+          cursor: pointer;
+        }
+        
+        input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+        }
+        
+        input[type="number"],
+        input[type="range"] {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1.5px solid var(--neutral-medium);
+          border-radius: 50px;
+          font-family: "Poppins", sans-serif;
+          font-size: 16px;
+          transition: border-color 0.3s ease;
+        }
+        
+        input[type="number"]:focus,
+        input[type="range"]:focus {
+          border-color: var(--primary-color);
+          outline: none;
+        }
+        
+        .range-label {
+          font-size: 14px;
+          margin-top: 5px;
+          margin-bottom: 15px;
+          color: var(--text-color);
+          width: 100%;
+          text-align: left;
+          font-weight: 600;
+        }
+        
+        button {
+          background-color: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 15px 0;
+          border-radius: 50px;
+          font-family: "Montserrat", sans-serif;
+          font-weight: 600;
+          font-size: 18px;
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.3s ease;
+          width: 100%;
+        }
+        
+        button:hover {
+          background-color: #1e5d22;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(39, 116, 45, 0.3);
+        }
+        
+        #output {
+          margin-top: 25px;
+          font-family: monospace, monospace;
+          font-size: 14px;
+          color: var(--text-color);
+          text-align: left;
+          white-space: pre-wrap;
+          word-break: break-word;
+          background: #e9f5e9;
+          border-radius: 12px;
+          padding: 15px 20px;
+          min-height: 60px;
+        }
+        
+        .error-message {
+          color: #d93025;
+          font-size: 12px;
+          margin-top: 5px;
+          font-family: "Poppins", sans-serif;
+          font-weight: 700;
+          text-align: left;
+          width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+        <p class="subtitle">Choose options, length, and how many to generate</p>
+        <form id="pwForm" novalidate> <label class="checkbox-wrapper"><input type="checkbox" id="uppercase" checked /> Include Uppercase</label> <label class="checkbox-wrapper"><input type="checkbox" id="lowercase" checked /> Include Lowercase</label> <label class="checkbox-wrapper"><input type="checkbox" id="numbers" checked /> Include Numbers</label> <label class="checkbox-wrapper"><input type="checkbox" id="special" /> Include Special Characters</label> <label for="length" class="range-label">Length: <span id="lenVal">12</span></label> <input type="range" id="length" min="8" max="32" value="12" step="1" aria-valuemin="8" aria-valuemax="32" aria-valuenow="12" /> <label for="count" class="range-label">How many? (1–10)</label> <input type="number" id="count" min="1" max="10" value="1" step="1" required /> <small class="error-message" id="errorMsg"></small> <button type="submit">Generate</button> </form>
+        <pre id="output"></pre>
+    </div>
+    <script>
+        const pwForm = document.getElementById("pwForm");
+        const uppercase = document.getElementById("uppercase");
+        const lowercase = document.getElementById("lowercase");
+        const numbers = document.getElementById("numbers");
+        const lengthRange = document.getElementById("length");
+        const lenVal = document.getElementById("lenVal");
+        const countInput = document.getElementById("count");
+        const output = document.getElementById("output");
+        const errorMsg = document.getElementById("errorMsg");
+        
+        const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const LOWER = "abcdefghijklmnopqrstuvwxyz";
+        const NUMS = "0123456789";
+        const SPECIAL = "!@#$%^&*()_+[]{}|;:,.<>?";
+        
+        lenVal.textContent = lengthRange.value;
+        
+        lengthRange.addEventListener("input", () => {
+          lenVal.textContent = lengthRange.value;
+        });
+        
+        pwForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          errorMsg.textContent = "";
+          output.textContent = "";
+        
+          if (!uppercase.checked && !lowercase.checked && !numbers.checked && !special.checked) {
+            errorMsg.textContent = "Select at least one character type!";
+            return;
+          }
+        
+          let count = parseInt(countInput.value, 10);
+          if (isNaN(count) || count < 1 || count > 10) {
+            errorMsg.textContent = "Amount must be between 1 and 10!";
+            return;
+          }
+        
+          let length = parseInt(lengthRange.value, 10);
+          if (length < 8 || length > 32) {
+            errorMsg.textContent = "Length must be between 8 and 32 characters!";
+            return;
+          }
+        
+          const charset = buildCharset();
+          if (!charset) {
+            errorMsg.textContent = "Character set is empty. Select options!";
+            return;
+          }
+        
+          let results = [];
+          for (let i = 0; i < count; i++) {
+            results.push(generatePassword(length, charset));
+          }
+        
+          output.textContent = results.join("\n");
+        });
+        
+             function buildCharset() {
+          let chars = "";
+          if (uppercase.checked) chars += UPPER;
+          if (lowercase.checked) chars += LOWER;
+          if (numbers.checked) chars += NUMS;
+          if (special.checked) chars += SPECIAL;
+          return chars;
+        }
+        
+        function generatePassword(length, charset) {
+          const arr = new Uint32Array(length);
+          window.crypto.getRandomValues(arr);
+          let pwd = "";
+          for (let i = 0; i < length; i++) {
+            pwd += charset[arr[i] % charset.length];
+          }
+          return pwd;
+        }
+    </script>
+</body>
+
+</html>
