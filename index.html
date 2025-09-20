@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-    <!--
-    Developed by: Igor Kalen
-    Contact: igor@igorkalen.dev
-    Date: July 15, 2025
+<!--
+Developed by: Igor Kalen
+Contact: igor@igorkalen.dev
+Creation Date: September 20, 2025
+Version: 2.0
 
-    ---
-    MIT License
+———————————
+MIT License
 
 Copyright (c) 2025 Igor Kalen
 
@@ -28,252 +28,519 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  -->
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Password Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-          --primary-color: #27742d;
-          --secondary-color: #ffffff;
-          --text-color: #3a3a3f;
-          --neutral-light: #f8f9fa;
-          --neutral-medium: #d1d5db;
-          --dark-bg: #1a1a1a;
-          --dark-text: #ffffff;
-          --dark-secondary: #2d2d2d;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-          .announcement-banner {
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 20px;
+        
+        body {
+            font-family: "Poppins", sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+            position: relative;
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(20px);
+            z-index: -1;
+        }
+        
+        .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 10000;
+            padding: 20px 40px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
-
-        .announcement-banner.hidden {
-            transform: translateY(-100%);
-        }
-
-        .announcement-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            max-width: 1200px;
-            width: 100%;
-            position: relative;
-        }
-
-        .announcement-icon {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-        }
-
-        .announcement-text {
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .announcement-text strong {
+        
+        .logo {
+            font-family: "Poppins", sans-serif;
+            font-size: 28px;
             font-weight: 600;
+            color: #27742D;
         }
-
-        .announcement-text a {
+        
+        .github-btn {
+            background: #27742D;
             color: white;
-            text-decoration: underline;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-family: "Poppins", sans-serif;
             font-weight: 500;
-        }
-
-        .announcement-text a:hover {
+            font-size: 14px;
+            cursor: pointer;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 116, 45, 0.3);
         }
         
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
+        .github-btn:hover {
+            background: #1f5f26;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 116, 45, 0.4);
         }
         
-        body {
-          font-family: "Poppins", sans-serif;
-          background-color: var(--secondary-color);
-          color: var(--text-color);
-          height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
+        .github-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
         
         .container {
-          background: var(--neutral-light);
-          border-radius: 15px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-          max-width: 420px;
-          width: 100%;
-          padding: 40px 30px;
-          text-align: center;
-          animation: fadeInUp 0.8s ease forwards;
-          position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding-top: 80px;
         }
         
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .main-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
         
         h1 {
-          font-family: "Montserrat", sans-serif;
-          font-weight: 700;
-          font-size: 32px;
-          color: var(--primary-color);
-          margin-bottom: 10px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            color: #27742D;
+            margin-bottom: 8px;
+            text-align: center;
         }
         
-        p.subtitle {
-          font-family: "Montserrat", sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          color: var(--text-color);
-          margin-bottom: 30px;
+        .subtitle {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            color: #27742D;
+            margin-bottom: 30px;
+            text-align: center;
+            opacity: 0.8;
         }
         
         form {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-          align-items: flex-start;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
         }
         
-        label.checkbox-wrapper {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 14px;
-          user-select: none;
-          color: var(--text-color);
-          cursor: pointer;
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: "Poppins", sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            user-select: none;
+            color: #27742D;
+            cursor: pointer;
+            padding: 12px 16px;
+            background: rgba(39, 116, 45, 0.05);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-wrapper:hover {
+            background: rgba(39, 116, 45, 0.1);
+            border-color: rgba(39, 116, 45, 0.2);
+        }
+        
+        .checkbox-wrapper input:checked + span {
+            font-weight: 600;
         }
         
         input[type="checkbox"] {
-          width: 18px;
-          height: 18px;
-          cursor: pointer;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: white;
+            border: 2px solid #27742D;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.2s ease;
         }
         
-        input[type="number"],
+        input[type="checkbox"]:checked {
+            background: #27742D;
+            border-color: #27742D;
+        }
+        
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .input-group {
+            background: rgba(39, 116, 45, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(39, 116, 45, 0.1);
+        }
+        
+        .input-label {
+            font-family: "Poppins", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #27742D;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
         input[type="range"] {
-          width: 100%;
-          padding: 8px 12px;
-          border: 1.5px solid var(--neutral-medium);
-          border-radius: 50px;
-          font-family: "Poppins", sans-serif;
-          font-size: 16px;
-          transition: border-color 0.3s ease;
+            flex: 1;
+            height: 8px;
+            border-radius: 10px;
+            background: #e9ecef;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
         
-        input[type="number"]:focus,
-        input[type="range"]:focus {
-          border-color: var(--primary-color);
-          outline: none;
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #27742D;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(39, 116, 45, 0.3);
         }
         
-        .range-label {
-          font-size: 14px;
-          margin-top: 5px;
-          margin-bottom: 15px;
-          color: var(--text-color);
-          width: 100%;
-          text-align: left;
-          font-weight: 600;
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(39, 116, 45, 0.4);
         }
         
-        button {
-          background-color: var(--primary-color);
-          color: white;
-          border: none;
-          padding: 15px 0;
-          border-radius: 50px;
-          font-family: "Montserrat", sans-serif;
-          font-weight: 600;
-          font-size: 18px;
-          cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.3s ease;
-          width: 100%;
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #27742D;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(39, 116, 45, 0.3);
         }
         
-        button:hover {
-          background-color: #1e5d22;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(39, 116, 45, 0.3);
+        input[type="number"] {
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: "Poppins", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #27742D;
+            text-align: center;
+            min-width: 80px;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #27742D;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .length-display {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #27742D;
+            min-width: 35px;
+            text-align: center;
+        }
+        
+        .generate-btn {
+            background: #27742D;
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            border-radius: 15px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(39, 116, 45, 0.3);
+        }
+        
+        .generate-btn:hover {
+            background: #1f5f26;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 116, 45, 0.4);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
         }
         
         #output {
-          margin-top: 25px;
-          font-family: monospace, monospace;
-          font-size: 14px;
-          color: var(--text-color);
-          text-align: left;
-          white-space: pre-wrap;
-          word-break: break-word;
-          background: #e9f5e9;
-          border-radius: 12px;
-          padding: 15px 20px;
-          min-height: 60px;
+            margin-top: 25px;
+            background: rgba(39, 116, 45, 0.05);
+            border: 2px solid rgba(39, 116, 45, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 80px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .password-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid rgba(39, 116, 45, 0.2);
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #27742D;
+            word-break: break-all;
+        }
+        
+        .password-text {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            flex: 1;
+            margin-right: 10px;
+            font-size: 15px;
+        }
+        
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: "Poppins", sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .copy-btn:hover {
+            background: #27742D;
+        }
+        
+        .copy-btn.copied {
+            background: #6c757d;
         }
         
         .error-message {
-          color: #d93025;
-          font-size: 12px;
-          margin-top: 5px;
-          font-family: "Poppins", sans-serif;
-          font-weight: 700;
-          text-align: left;
-          width: 100%;
+            color: #dc3545;
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            padding: 10px;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .github-btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            
+            .container {
+                padding: 100px 15px 20px;
+            }
+            
+            .main-card {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            
+            .checkbox-wrapper {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .range-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .length-display {
+                font-size: 20px;
+            }
+            
+            .password-item {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            
+            .password-text {
+                margin-right: 0;
+                text-align: center;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-card {
+                margin: 0 10px;
+            }
         }
     </style>
 </head>
-
 <body>
-  <div class="announcement-banner" id="announcementBanner">
-      <div class="announcement-content">
-        <div class="announcement-text">The Password Generator service is officially deprecated as of August 4, 2025 and will no longer receive updates or support. Please consider using alternative tools.
-          <br>
-          It’s now open source and available for you to use in your own projects! Find it on <a href="https://github.com/igorkalen/passwordgenerator">GitHub</a>
-        </div>  
-		</div>
-      </div>
+    <div class="header">
+        <div class="logo">Password Generator</div>
+        <a href="https://github.com/igorkalen/passwordgenerator" class="github-btn">
+            <svg class="github-icon" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            Open Source
+        </a>
     </div>
+    
     <div class="container">
-        <h1>Password Generator</h1>
-        <p class="subtitle">Choose options, length, and how many to generate</p>
-        <form id="pwForm" novalidate> <label class="checkbox-wrapper"><input type="checkbox" id="uppercase" checked /> Include Uppercase</label> <label class="checkbox-wrapper"><input type="checkbox" id="lowercase" checked /> Include Lowercase</label> <label class="checkbox-wrapper"><input type="checkbox" id="numbers" checked /> Include Numbers</label> <label class="checkbox-wrapper"><input type="checkbox" id="special" /> Include Special Characters</label> <label for="length" class="range-label">Length: <span id="lenVal">12</span></label> <input type="range" id="length" min="8" max="32" value="12" step="1" aria-valuemin="8" aria-valuemax="32" aria-valuenow="12" /> <label for="count" class="range-label">How many? (1–10)</label> <input type="number" id="count" min="1" max="10" value="1" step="1" required /> <small class="error-message" id="errorMsg"></small> <button type="submit">Generate</button> </form>
-        <pre id="output"></pre>
+        <div class="main-card">
+            <h1>Password Generator</h1>
+            <p class="subtitle">Create strong, secure passwords with custom settings</p>
+            
+            <form id="pwForm" novalidate>
+                <div class="checkbox-group">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="uppercase" checked />
+                        <span>Uppercase</span>
+                    </label>
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="lowercase" checked />
+                        <span>Lowercase</span>
+                    </label>
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="numbers" checked />
+                        <span>Numbers</span>
+                    </label>
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="special" />
+                        <span>Symbols</span>
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Password Length</label>
+                    <div class="range-container">
+                        <input type="range" id="length" min="8" max="32" value="12" step="1" />
+                        <span class="length-display" id="lenVal">12</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Number of Passwords</label>
+                    <input type="number" id="count" min="1" max="10" value="1" step="1" required />
+                </div>
+                
+                <div class="error-message" id="errorMsg" style="display: none;"></div>
+                
+                <button type="submit" class="generate-btn">Generate Passwords</button>
+            </form>
+            
+            <div id="output"></div>
+        </div>
     </div>
+
     <script>
         const pwForm = document.getElementById("pwForm");
         const uppercase = document.getElementById("uppercase");
         const lowercase = document.getElementById("lowercase");
         const numbers = document.getElementById("numbers");
+        const special = document.getElementById("special");
         const lengthRange = document.getElementById("length");
         const lenVal = document.getElementById("lenVal");
         const countInput = document.getElementById("count");
@@ -285,67 +552,105 @@ SOFTWARE.
         const NUMS = "0123456789";
         const SPECIAL = "!@#$%^&*()_+[]{}|;:,.<>?";
         
-        lenVal.textContent = lengthRange.value;
-        
         lengthRange.addEventListener("input", () => {
-          lenVal.textContent = lengthRange.value;
+            lenVal.textContent = lengthRange.value;
         });
         
         pwForm.addEventListener("submit", (e) => {
-          e.preventDefault();
-          errorMsg.textContent = "";
-          output.textContent = "";
+            e.preventDefault();
+            errorMsg.style.display = "none";
+            output.innerHTML = "";
         
-          if (!uppercase.checked && !lowercase.checked && !numbers.checked && !special.checked) {
-            errorMsg.textContent = "Select at least one character type!";
-            return;
-          }
+            if (!uppercase.checked && !lowercase.checked && !numbers.checked && !special.checked) {
+                showError("Please select at least one character type!");
+                return;
+            }
         
-          let count = parseInt(countInput.value, 10);
-          if (isNaN(count) || count < 1 || count > 10) {
-            errorMsg.textContent = "Amount must be between 1 and 10!";
-            return;
-          }
+            let count = parseInt(countInput.value, 10);
+            if (isNaN(count) || count < 1 || count > 10) {
+                showError("Number of passwords must be between 1 and 10!");
+                return;
+            }
         
-          let length = parseInt(lengthRange.value, 10);
-          if (length < 8 || length > 32) {
-            errorMsg.textContent = "Length must be between 8 and 32 characters!";
-            return;
-          }
+            let length = parseInt(lengthRange.value, 10);
+            if (length < 8 || length > 32) {
+                showError("Password length must be between 8 and 32 characters!");
+                return;
+            }
         
-          const charset = buildCharset();
-          if (!charset) {
-            errorMsg.textContent = "Character set is empty. Select options!";
-            return;
-          }
+            const charset = buildCharset();
+            if (!charset) {
+                showError("No character set available. Please select options!");
+                return;
+            }
         
-          let results = [];
-          for (let i = 0; i < count; i++) {
-            results.push(generatePassword(length, charset));
-          }
-        
-          output.textContent = results.join("\n");
+            for (let i = 0; i < count; i++) {
+                const password = generatePassword(length, charset);
+                createPasswordItem(password, i + 1);
+            }
         });
         
-             function buildCharset() {
-          let chars = "";
-          if (uppercase.checked) chars += UPPER;
-          if (lowercase.checked) chars += LOWER;
-          if (numbers.checked) chars += NUMS;
-          if (special.checked) chars += SPECIAL;
-          return chars;
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.style.display = "block";
+        }
+        
+        function createPasswordItem(password, index) {
+            const item = document.createElement("div");
+            item.className = "password-item";
+            
+            const text = document.createElement("span");
+            text.className = "password-text";
+            text.textContent = password;
+            
+            const copyBtn = document.createElement("button");
+            copyBtn.className = "copy-btn";
+            copyBtn.textContent = "Copy";
+            copyBtn.onclick = () => copyToClipboard(password, copyBtn);
+            
+            item.appendChild(text);
+            item.appendChild(copyBtn);
+            output.appendChild(item);
+        }
+        
+        async function copyToClipboard(text, button) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const originalText = button.textContent;
+                button.textContent = "Copied!";
+                button.classList.add("copied");
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove("copied");
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                button.textContent = "Failed";
+                setTimeout(() => {
+                    button.textContent = "Copy";
+                }, 2000);
+            }
+        }
+        
+        function buildCharset() {
+            let chars = "";
+            if (uppercase.checked) chars += UPPER;
+            if (lowercase.checked) chars += LOWER;
+            if (numbers.checked) chars += NUMS;
+            if (special.checked) chars += SPECIAL;
+            return chars;
         }
         
         function generatePassword(length, charset) {
-          const arr = new Uint32Array(length);
-          window.crypto.getRandomValues(arr);
-          let pwd = "";
-          for (let i = 0; i < length; i++) {
-            pwd += charset[arr[i] % charset.length];
-          }
-          return pwd;
+            const arr = new Uint32Array(length);
+            window.crypto.getRandomValues(arr);
+            let pwd = "";
+            for (let i = 0; i < length; i++) {
+                pwd += charset[arr[i] % charset.length];
+            }
+            return pwd;
         }
     </script>
 </body>
-
 </html>
